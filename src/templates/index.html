@@ -411,6 +411,26 @@ textarea{
   animation:spin 1s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
+/* Feedback CSS */
+.feedback-row{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:14px 0 18px;
+}
+.feedback-btn{
+  border:0;
+  border-radius:16px;
+  padding:14px;
+  font-weight:900;
+  cursor:pointer;
+  color:white;
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
+}
+.feedback-btn.ok{background:#2563eb;}
+.feedback-btn.green{background:#16a34a;}
+.feedback-btn.yellow{background:#ca8a04;}
+.feedback-btn.red{background:#dc2626;}
 @media(max-width:900px){
   .header h1{font-size:42px}
   .scene-card{height:520px}
@@ -420,6 +440,7 @@ textarea{
   .info-row{grid-template-columns:1fr}
   .result-top{grid-template-columns:1fr}
   .reason-grid,.agent-grid{grid-template-columns:1fr}
+  .feedback-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -496,6 +517,10 @@ textarea{
 </div>
 
 <script>
+let lastMessage = "";
+let lastInputType = "";
+let lastPrediction = "";
+
 function esc(s){
   return String(s)
     .replaceAll("&","&amp;")
@@ -521,6 +546,9 @@ async function analyze(){
     alert("請先輸入可疑訊息。");
     return;
   }
+  
+  lastMessage = msg;
+  lastInputType = inputType;
 
   closeModal();
   btn.disabled = true;
@@ -537,6 +565,7 @@ async function analyze(){
       body:JSON.stringify({content:msg, input_type:inputType})
     });
     const data = await res.json();
+    lastPrediction = data.classification;
     renderResult(data);
   }catch(e){
     resultBox.style.display = "block";
@@ -547,6 +576,29 @@ async function analyze(){
     btn.innerText = "🎣 開始釣魚偵測";
   }
 }
+
+async function sendFeedback(correctLabel, reason){
+  const statusBox = document.getElementById("feedbackStatus");
+  try{
+    const res = await fetch("/api/feedback", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        content:lastMessage,
+        input_type:lastInputType,
+        predicted_label:lastPrediction,
+        correct_label:correctLabel,
+        reason:reason
+      })
+    });
+    statusBox.style.display = "block";
+    statusBox.innerHTML = "✅ 回饋已儲存！";
+  }catch(e){
+    statusBox.style.display = "block";
+    statusBox.innerHTML = "❌ 回饋儲存失敗：" + esc(e);
+  }
+}
+
 function renderResult(data){
   const box = document.getElementById("resultBox");
   box.style.display = "block";
@@ -588,6 +640,18 @@ function renderResult(data){
     <ul class="advice-list">
       ${data.advice.map(x => `<li>${esc(x)}</li>`).join("")}
     </ul>
+
+    <h2 class="section-title">使用者回饋</h2>
+    <div class="summary">
+      如果系統判斷錯誤，請選擇正確答案。這些回饋會被保存為後續訓練資料。
+    </div>
+    <div class="feedback-row">
+      <button class="feedback-btn ok" onclick="sendFeedback(lastPrediction, '判斷正確')">✅ 判斷正確</button>
+      <button class="feedback-btn green" onclick="sendFeedback('GREEN', '應為綠魚')">🟢 應該是綠魚</button>
+      <button class="feedback-btn yellow" onclick="sendFeedback('YELLOW', '應為黃魚')">🟡 應該是黃魚</button>
+      <button class="feedback-btn red" onclick="sendFeedback('RED', '應為紅魚')">🔴 應該是紅魚</button>
+    </div>
+    <div id="feedbackStatus" class="summary" style="display:none;"></div>
 
     <button class="primary" onclick="openModal()">再次投入魚餌</button>
   `;
