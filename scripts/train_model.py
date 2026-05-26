@@ -1,28 +1,31 @@
-import os
-import joblib
 import pandas as pd
-from sklearn.pipeline import Pipeline
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
+import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, "data", "phishing_training_data.csv")
-MODEL_PATH = os.path.join(BASE_DIR, "models", "phishing_risk_model.joblib")
+def merge_approved_feedback():
+    training_path = "data/phishing_training_data.csv"
+    approved_path = "data/approved_feedback.csv"
 
-def train():
-    df = pd.read_csv(DATA_PATH)
-    df["model_input"] = df["input_type"].astype(str) + " " + df["message"].astype(str)
+    if not os.path.exists(approved_path):
+        print("ℹ️ 沒有已批准的回饋資料，跳過合併。")
+        return
 
-    model = Pipeline([
-        ("tfidf", TfidfVectorizer(analyzer="char_wb", ngram_range=(2, 5), max_features=5000)),
-        ("clf", LogisticRegression(max_iter=1000, class_weight="balanced"))
-    ])
+    training_df = pd.read_csv(training_path)
+    approved_df = pd.read_csv(approved_path)
 
-    model.fit(df["model_input"], df["label"])
+    new_data = pd.DataFrame({
+        "message": approved_df["message"],
+        "input_type": approved_df["input_type"],
+        "label": approved_df["correct_label"],
+        "scam_type": approved_df["reason"]
+    })
 
-    os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
-    joblib.dump(model, MODEL_PATH)
-    print(f"✅ 模型已成功儲存至 {MODEL_PATH}")
+    combined_df = pd.concat([training_df, new_data], ignore_index=True)
+    combined_df = combined_df.drop_duplicates(subset=["message", "input_type", "label"])
+
+    combined_df.to_csv(training_path, index=False, encoding="utf-8-sig")
+    print(f"✅ 已將 {len(new_data)} 筆審核通過的資料合併。目前總筆數：{len(combined_df)}")
+
+    os.remove(approved_path)
 
 if __name__ == "__main__":
-    train()
+    merge_approved_feedback()

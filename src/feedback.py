@@ -2,11 +2,11 @@ import csv
 import os
 from datetime import datetime
 
-FEEDBACK_PATH = "data/phishing_feedback_data.csv"
+PENDING_PATH = "data/pending_feedback.csv"
 
 def save_feedback(content, input_type, predicted_label, correct_label, reason):
     file_exists = os.path.exists(FEEDBACK_PATH)
-    
+
     with open(FEEDBACK_PATH, "a", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=[
             "timestamp", "message", "input_type", "predicted_label", "correct_label", "reason"
