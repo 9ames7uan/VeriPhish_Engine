@@ -21,5 +21,3 @@ The system employs a layered defense strategy:
 ## License
 
 This project is licensed under the MIT License. See `LICENSE.md` for details.
-
-```
