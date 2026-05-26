@@ -16,9 +16,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the source code, models, and data folders into the container
-COPY src/ ./src/
-COPY models/ ./models/
-COPY data/ ./data/
+COPY . .
 
 # Set environment variables for the application
 ENV PYTHONPATH=/app

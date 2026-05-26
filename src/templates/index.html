@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fish & Bait 詐騙偵測助理</title>
+<style>
+:root{
+  --sea1:#8edbff;
+  --sea2:#2879d9;
+  --sea3:#061c46;
+  --yellow:#ffe45e;
+  --dark:#082653;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Microsoft JhengHei", Arial, sans-serif;
+  color:white;
+  background:
+    radial-gradient(circle at 18% 8%,rgba(255,255,255,.35),transparent 20%),
+    linear-gradient(180deg,var(--sea1),var(--sea2) 42%,var(--sea3));
+}
+.app{
+  width:min(1180px,94vw);
+  margin:auto;
+  padding:28px 0 60px;
+}
+.header{
+  text-align:center;
+  margin-bottom:22px;
+}
+.header h1{
+  margin:0;
+  font-size:58px;
+  color:var(--yellow);
+  text-shadow:0 8px 22px rgba(0,0,0,.35);
+}
+.header p{
+  margin:8px 0 0;
+  font-weight:800;
+  color:#e8f9ff;
+}
+.scene-card{
+  position:relative;
+  height:540px;
+  border-radius:34px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 55% 20%,rgba(255,255,255,.25),transparent 30%),
+    linear-gradient(180deg,rgba(115,210,255,.55),rgba(4,39,105,.75));
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 28px 80px rgba(0,0,0,.28);
+}
+.sun{
+  position:absolute;
+  left:52px;
+  top:52px;
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  background:#ffe45e;
+  box-shadow:0 0 55px rgba(255,228,94,.75);
+}
+.cloud{
+  position:absolute;
+  color:white;
+  font-size:46px;
+  opacity:.75;
+}
+.cloud.one{left:210px;top:65px}
+.cloud.two{right:190px;top:95px}
+.dock{
+  position:absolute;
+  left:0;
+  bottom:92px;
+  width:430px;
+  height:56px;
+  background:linear-gradient(90deg,#76441f,#b5743f);
+  border-radius:0 24px 24px 0;
+}
+.person{
+  position:absolute;
+  left:130px;
+  bottom:130px;
+  width:190px;
+  height:250px;
+  animation:sway 4s ease-in-out infinite;
+}
+@keyframes sway{
+  0%,100%{transform:rotate(-1deg)}
+  50%{transform:rotate(1deg) translateY(-5px)}
+}
+.head{
+  position:absolute;
+  top:5px;
+  left:58px;
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  background:#ffd6a5;
+}
+.hair{
+  position:absolute;
+  top:0;
+  left:50px;
+  width:98px;
+  height:44px;
+  border-radius:42px 42px 16px 16px;
+  background:#2c2d35;
+}
+.eye{
+  position:absolute;
+  top:39px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#222;
+}
+.eye.l{left:82px}.eye.r{left:115px}
+.smile{
+  position:absolute;
+  left:91px;
+  top:58px;
+  width:24px;
+  height:12px;
+  border-bottom:3px solid #222;
+  border-radius:0 0 18px 18px;
+}
+.body{
+  position:absolute;
+  top:95px;
+  left:45px;
+  width:112px;
+  height:118px;
+  border-radius:28px 28px 20px 20px;
+  background:#fff;
+}
+.vest{
+  position:absolute;
+  top:104px;
+  left:55px;
+  width:92px;
+  height:96px;
+  border-radius:20px;
+  background:#ffb703;
+}
+.arm{
+  position:absolute;
+  top:120px;
+  left:133px;
+  width:118px;
+  height:16px;
+  background:#ffd6a5;
+  border-radius:999px;
+  transform:rotate(-18deg);
+}
+.rod{
+  position:absolute;
+  top:139px;
+  left:230px;
+  width:570px;
+  height:4px;
+  background:#382318;
+  transform:rotate(-22deg);
+  transform-origin:left center;
+}
+.line{
+  position:absolute;
+  left:715px;
+  top:120px;
+  width:2px;
+  height:245px;
+  background:rgba(255,255,255,.85);
+}
+.bait{
+  position:absolute;
+  left:650px;
+  top:350px;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  border:5px solid rgba(255,255,255,.55);
+  background:radial-gradient(circle at 35% 30%,#fff,#ff5b7c 42%,#b5174a);
+  box-shadow:0 0 48px rgba(255,91,124,.75);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:46px;
+  cursor:pointer;
+  animation:bob 2.3s ease-in-out infinite;
+}
+@keyframes bob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(12px)}
+}
+.bait-tip{
+  position:absolute;
+  left:575px;
+  top:470px;
+  width:330px;
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:18px;
+  padding:14px;
+  text-align:center;
+  font-weight:900;
+  box-shadow:0 14px 30px rgba(0,0,0,.25);
+}
+.fish-bg{
+  position:absolute;
+  right:135px;
+  bottom:60px;
+  font-size:90px;
+  opacity:.25;
+  animation:swim 5.8s ease-in-out infinite;
+}
+@keyframes swim{
+  0%,100%{transform:translateX(0)}
+  50%{transform:translateX(-100px) scaleX(-1)}
+}
+.info-row{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-top:18px;
+}
+.info-card{
+  background:rgba(3,31,82,.65);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:0 14px 35px rgba(0,0,0,.18);
+}
+.info-card b{color:var(--yellow)}
+.result-section{
+  display:none;
+  margin-top:24px;
+  background:rgba(3,31,82,.78);
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:34px;
+  padding:26px;
+  box-shadow:0 28px 80px rgba(0,0,0,.28);
+}
+.result-top{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:26px;
+  align-items:center;
+}
+.result-fish{
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:90px;
+  border:5px solid rgba(255,255,255,.42);
+  animation:pop .55s ease-out;
+}
+@keyframes pop{
+  from{transform:scale(.5);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.RED{background:#ef4444;box-shadow:0 0 48px rgba(239,68,68,.85)}
+.YELLOW{background:#eab308;box-shadow:0 0 48px rgba(234,179,8,.85)}
+.GREEN{background:#22c55e;box-shadow:0 0 48px rgba(34,197,94,.85)}
+.risk-title{
+  color:var(--yellow);
+  font-size:34px;
+  font-weight:900;
+}
+.summary{
+  margin-top:12px;
+  background:rgba(0,0,0,.3);
+  border-radius:18px;
+  padding:16px;
+  line-height:1.8;
+}
+.tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.tag{
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.2);
+}
+.section-title{
+  color:var(--yellow);
+  margin:24px 0 10px;
+}
+.reason-grid,.agent-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.reason,.agent{
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:18px;
+  padding:14px;
+  line-height:1.7;
+}
+.agent-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  color:var(--yellow);
+  font-weight:900;
+  margin-bottom:8px;
+}
+.advice-list{
+  background:rgba(0,0,0,.25);
+  border-radius:20px;
+  padding:18px 22px;
+  line-height:1.9;
+}
+.modal-bg{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,8,25,.62);
+  z-index:20;
+  padding:20px;
+}
+.modal{
+  width:min(760px,96vw);
+  background:linear-gradient(180deg,rgba(12,72,150,.98),rgba(0,25,72,.98));
+  border:1px solid rgba(255,255,255,.3);
+  border-radius:30px;
+  padding:24px;
+  box-shadow:0 40px 110px rgba(0,0,0,.55);
+}
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  gap:14px;
+}
+.modal h2{
+  margin:0;
+  color:var(--yellow);
+  font-size:30px;
+}
+.close{
+  width:44px;
+  height:44px;
+  border:0;
+  border-radius:14px;
+  background:rgba(255,255,255,.15);
+  color:white;
+  font-size:25px;
+  cursor:pointer;
+}
+label{
+  display:block;
+  margin:16px 0 8px;
+  color:var(--yellow);
+  font-weight:900;
+}
+select,textarea{
+  width:100%;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(0,0,0,.35);
+  color:white;
+  padding:14px;
+  font-size:16px;
+  outline:none;
+}
+textarea{
+  min-height:175px;
+  resize:vertical;
+  line-height:1.7;
+}
+.primary{
+  width:100%;
+  margin-top:18px;
+  padding:18px;
+  border:0;
+  border-radius:18px;
+  background:linear-gradient(90deg,#ffe45e,#ffb703);
+  color:#082653;
+  font-size:20px;
+  font-weight:900;
+  cursor:pointer;
+}
+.loading{
+  display:none;
+  margin-top:24px;
+  background:rgba(3,31,82,.78);
+  border-radius:28px;
+  padding:24px;
+  text-align:center;
+}
+.spinner{
+  width:64px;
+  height:64px;
+  margin:0 auto 16px;
+  border-radius:50%;
+  border:7px solid rgba(255,228,94,.25);
+  border-top-color:var(--yellow);
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){
+  .header h1{font-size:42px}
+  .scene-card{height:520px}
+  .bait{left:55%;top:325px}
+  .line{left:calc(55% + 74px)}
+  .bait-tip{left:20px;right:20px;top:468px;width:auto}
+  .info-row{grid-template-columns:1fr}
+  .result-top{grid-template-columns:1fr}
+  .reason-grid,.agent-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="header">
+    <h1>🎣 Fish & Bait</h1>
+    <p>LINE／簡訊／Email 詐騙偵測助理 · Multi-Agent Phishing Detection</p>
+  </header>
+
+  <section class="scene-card">
+    <div class="sun"></div>
+    <div class="cloud one">☁️</div>
+    <div class="cloud two">☁️</div>
+    <div class="dock"></div>
+
+    <div class="person">
+      <div class="hair"></div>
+      <div class="head"></div>
+      <div class="eye l"></div>
+      <div class="eye r"></div>
+      <div class="smile"></div>
+      <div class="body"></div>
+      <div class="vest"></div>
+      <div class="arm"></div>
+      <div class="rod"></div>
+    </div>
+
+    <div class="line"></div>
+    <button class="bait" onclick="openModal()">🪱</button>
+    <div class="bait-tip">點擊魚餌：請輸入可疑訊息，以確認是否為詐騙</div>
+    <div class="fish-bg">🐟</div>
+  </section>
+
+  <section class="info-row">
+    <div class="info-card"><b>🕵️ 訊息來源代理</b><br>檢查冒名、假官方與陌生來源。</div>
+    <div class="info-card"><b>🧠 語意分析代理</b><br>檢查恐嚇、急迫、利誘與心理操控。</div>
+    <div class="info-card"><b>🔗 連結檢查代理</b><br>檢查短網址、可疑網域與敏感資料。</div>
+    <div class="info-card"><b>⚖️ 總判斷代理</b><br>輸出紅黃綠魚、理由與處理建議。</div>
+  </section>
+
+  <section class="loading" id="loadingBox">
+    <div class="spinner"></div>
+    <h2>多代理正在分析魚餌……</h2>
+    <p>正在檢查訊息來源、社交工程語意、連結風險與情境一致性。</p>
+  </section>
+
+  <section class="result-section" id="resultBox"></section>
+</main>
+
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2>🪱 投入可疑魚餌</h2>
+        <p>貼上 LINE、簡訊、Email 或聊天對話中的可疑訊息。</p>
+      </div>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+
+    <label>訊息來源類型</label>
+    <select id="inputType">
+      <option value="LINE">LINE</option>
+      <option value="SMS">簡訊 SMS</option>
+      <option value="Email">Email</option>
+      <option value="Chat">聊天對話</option>
+    </select>
+
+    <label>可疑訊息內容</label>
+    <textarea id="message" placeholder="例如：您的銀行帳戶異常，請立即點擊連結重新驗證，否則帳戶將被凍結。"></textarea>
+
+    <button class="primary" id="analyzeBtn" onclick="analyze()">🎣 開始釣魚偵測</button>
+  </div>
+</div>
+
+<script>
+function esc(s){
+  return String(s)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+function openModal(){
+  document.getElementById("modal").style.display = "flex";
+}
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+async function analyze(){
+  const msg = document.getElementById("message").value.trim();
+  const inputType = document.getElementById("inputType").value;
+  const btn = document.getElementById("analyzeBtn");
+  const loading = document.getElementById("loadingBox");
+  const resultBox = document.getElementById("resultBox");
+
+  if(!msg){
+    alert("請先輸入可疑訊息。");
+    return;
+  }
+
+  closeModal();
+  btn.disabled = true;
+  btn.innerText = "分析中……";
+  loading.style.display = "block";
+  resultBox.style.display = "none";
+  resultBox.innerHTML = "";
+  loading.scrollIntoView({behavior:"smooth", block:"start"});
+
+  try{
+    const res = await fetch("/api/analyze", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({content:msg, input_type:inputType})
+    });
+    const data = await res.json();
+    renderResult(data);
+  }catch(e){
+    resultBox.style.display = "block";
+    resultBox.innerHTML = `<h2>連線錯誤</h2><div class="summary">後端連線失敗：${esc(e)}</div>`;
+  }finally{
+    loading.style.display = "none";
+    btn.disabled = false;
+    btn.innerText = "🎣 開始釣魚偵測";
+  }
+}
+function renderResult(data){
+  const box = document.getElementById("resultBox");
+  box.style.display = "block";
+  box.innerHTML = `
+    <div class="result-top">
+      <div>
+        <div class="result-fish ${esc(data.classification)}">${esc(data.fish)}</div>
+      </div>
+      <div>
+        <div class="risk-title">${esc(data.risk_label)}</div>
+        <div class="summary">
+          <b>${esc(data.short_title)}</b><br>
+          總風險分數：${esc(data.risk_score)}/10<br>
+          ${esc(data.summary)}
+        </div>
+        <div class="tags">
+          ${data.scam_types.map(x => `<span class="tag">${esc(x)}</span>`).join("")}
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title">主要可疑原因</h2>
+    <div class="reason-grid">
+      ${data.evidence.map(x => `<div class="reason">${esc(x)}</div>`).join("")}
+    </div>
+
+    <h2 class="section-title">多代理分析結果</h2>
+    <div class="agent-grid">
+      ${data.agents.map(a => `
+        <div class="agent">
+          <div class="agent-head"><span>${esc(a.name)}</span><span>${esc(a.score)}/10</span></div>
+          <b>${esc(a.finding)}</b>
+          <div>${esc(a.reasoning)}</div>
+        </div>
+      `).join("")}
+    </div>
+
+    <h2 class="section-title">建議處理方式</h2>
+    <ul class="advice-list">
+      ${data.advice.map(x => `<li>${esc(x)}</li>`).join("")}
+    </ul>
+
+    <button class="primary" onclick="openModal()">再次投入魚餌</button>
+  `;
+  box.scrollIntoView({behavior:"smooth", block:"start"});
+}
+</script>
+</body>
+</html>
