@@ -1,23 +1,78 @@
-# VeriPhish Engine: Multi-Agent Neural Scam Detection
+# 🐟 VeriPhish Engine
 
-## Project Overview
-VeriPhish Engine is an automated cybersecurity platform designed to detect and mitigate social engineering threats. It leverages a **Multi-Agent Architecture** combined with machine learning classification to analyze suspicious messages (LINE, SMS, Email) for potential phishing risks in real-time.
+VeriPhish Engine is a high-performance web service designed for real-time phishing message detection. It leverages a hybrid approach, combining **Rule-based Agents** with a **Machine Learning Classifier (TF-IDF + Logistic Regression)**, to provide multi-layered risk identification and assessment.
 
+## 🚀 System Architecture
 
+The project follows a modular design, ensuring the separation of data ingestion, model training, and API serving.
 
-## Key Features
-- **Source Identifier Agent:** Analyzes sender authenticity and impersonation attempts.
-- **Semantic Analyzer Agent:** Uses NLP to detect urgency, threat, or financial manipulation patterns.
-- **Link Validator Agent:** Parses URLs and identifies suspicious domains or sensitive data requests.
-- **Orchestrator:** Integrates multi-agent analysis to output a standardized risk score (Red/Yellow/Green).
-- **Feedback Loop:** Enables continuous model improvement through user-contributed labels.
+## 🛠 Tech Stack
 
-## System Architecture
-The system employs a layered defense strategy:
-1. **Heuristic Layer:** Rule-based detection for immediate threat signals.
-2. **Neural Layer:** Scikit-learn Logistic Regression trained on categorized phishing datasets.
-3. **API Layer:** FastAPI-powered asynchronous backend for low-latency analysis.
+* **Backend:** FastAPI
+* **ML:** Scikit-learn (TF-IDF, Logistic Regression), Joblib
+* **Data Management:** Pandas, CSV-based ingestion
+* **Deployment:** Docker, Fedora Linux
+* **Testing:** Pytest
 
-## License
+## 📂 Project Structure
 
-This project is licensed under the MIT License. See `LICENSE.md` for details.
+```text
+.
+├── data/               # Training datasets and user feedback logs
+├── models/             # Exported .joblib ML models
+├── scripts/            # Automation scripts (data init/augmentation)
+├── src/                # Core business logic
+│   ├── app.py          # FastAPI application entry point
+│   ├── ml_engine.py    # ML inference engine
+│   └── agents.py       # Rule-based agent system
+├── tests/              # Unit tests (pytest)
+└── Makefile            # Automation pipeline management
+
+```
+
+## ⚡ Quick Start
+
+### 1. Setup Environment
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+```
+
+### 2. Initialize & Train
+
+Use the `Makefile` to handle the training pipeline:
+
+```bash
+# Initialize data and train the model
+make train
+
+# Add new data and re-train
+make update-model
+
+```
+
+### 3. Run Tests
+
+Ensure the core logic is functioning correctly:
+
+```bash
+make test
+
+```
+
+### 4. Launch API
+
+```bash
+uvicorn src.app:app --reload
+
+```
+
+## 💡 Key Features
+
+* **Multi-Layered Risk Assessment:** Blends heuristic rule-based agents with ML confidence scores.
+* **Closed-Loop Learning:** Supports a `/api/feedback` endpoint to capture misclassified samples for future model refinement.
+* **Automated MLOps:** Streamlined data management via Makefile, ensuring consistency between development and production environments.
+
