@@ -5,3 +5,6 @@ venv/
 *.log
 *.joblib
 .DS_Store
+models/*.joblib
+data/*.csv
+!data/phishing_training_data.csv
