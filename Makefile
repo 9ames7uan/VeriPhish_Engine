@@ -19,7 +19,8 @@ retrain-all:
 	python3 src/train.py
 
 test:
-	pytest tests/
+	PYTHONPATH=. pytest tests/
+	python3 -m pytest tests/
 
 clean:
 	rm -f models/*.joblib

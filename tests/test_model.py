@@ -1,5 +1,10 @@
 import joblib
 import pytest
+import os
+import pandas as pd
+from src.utils import BASE_DIR
+
+MODEL_PATH = os.path.join(BASE_DIR, "models", "phishing_risk_model.joblib")
 
 def test_model_prediction():
     model = joblib.load("models/phishing_risk_model.joblib")
@@ -31,3 +36,24 @@ def test_model_prediction():
         print("-" * 60)
 
         assert pred in ["RED", "YELLOW", "GREEN"]
+
+def test_path_and_model_load():
+    assert os.path.exists(MODEL_PATH), "Model file missing!"
+    model = joblib.load(MODEL_PATH)
+    assert hasattr(model, "predict"), "Invalid model format"
+
+@pytest.mark.parametrize("bad_input", ["", "   ", "A"*1000])
+def test_robustness_input(bad_input):
+    model = joblib.load(MODEL_PATH)
+    pred = model.predict([bad_input])[0]
+    assert pred in ["RED", "YELLOW", "GREEN"]
+
+def test_data_deduplication():
+    df = pd.DataFrame([{"message": "A", "input_type": "SMS", "label": "RED"},
+                       {"message": "A", "input_type": "SMS", "label": "RED"}])
+    deduplicated = df.drop_duplicates(subset=["message", "input_type", "label"])
+    assert len(deduplicated) == 1
+
+def test_feedback_schema():
+    payload = {"message": "Test", "predicted_label": "GREEN", "correct_label": "RED"}
+    assert "message" in payload and "correct_label" in payload

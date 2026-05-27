@@ -1,5 +1,8 @@
 import re
+import os
 from urllib.parse import urlparse
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def clamp(x, low=0, high=10):
     return max(low, min(high, x))
