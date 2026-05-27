@@ -1,5 +1,10 @@
 # VeriPhish Engine Makefile
-.PHONY: init add-data train retrain-all merge-only train-only test clean
+.PHONY: init add-data train retrain-all update-model test clean
+
+train:
+	python3 src/train.py
+
+update-model: retrain-all
 
 init:
 	python3 scripts/init_data.py
@@ -9,12 +14,8 @@ add-data:
 
 retrain-all:
 	@echo "--- [1/2] 正在檢查審核區 ---"
-	@echo "請務必確保 data/pending_feedback.csv 已審核並更名為 data/approved_feedback.csv"
 	python3 scripts/train_model.py
 	@echo "--- [2/2] 正在重新訓練模型 ---"
-	python3 src/train.py
-
-train-only:
 	python3 src/train.py
 
 test:

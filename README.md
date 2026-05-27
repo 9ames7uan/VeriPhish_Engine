@@ -1,38 +1,40 @@
 # 🐟 VeriPhish Engine
 
-VeriPhish Engine is a high-performance web service designed for real-time phishing message detection. It leverages a hybrid approach, combining **Rule-based Agents** with a **Machine Learning Classifier (TF-IDF + Logistic Regression)**, to provide multi-layered risk identification and assessment.
+VeriPhish Engine is an industrial-grade, high-performance web service engineered for real-time phishing detection. It utilizes a **Hybrid Detection Architecture** that integrates **Heuristic Rule-based Agents** with a **Machine Learning Classifier (TF-IDF + Logistic Regression)** to deliver multi-layered risk identification and continuous learning capabilities.
 
-## 🚀 System Architecture
+## ⚙️ Engineering Philosophy
 
-The project follows a modular design, ensuring the separation of data ingestion, model training, and API serving.
+This project adheres to professional software engineering standards, prioritizing:
+
+* **Decoupling:** Strict separation of concerns between business logic, model inference, and data processing.
+* **Closed-Loop Learning:** A Human-in-the-Loop (HITL) pipeline that translates user feedback into actionable model improvements.
+* **MLOps Automation:** Leveraging a `Makefile` to implement a **Declarative Pipeline**, ensuring environment parity and system reproducibility.
 
 ## 🛠 Tech Stack
 
-* **Backend:** FastAPI
-* **ML:** Scikit-learn (TF-IDF, Logistic Regression), Joblib
-* **Data Management:** Pandas, CSV-based ingestion
-* **Deployment:** Docker, Fedora Linux
-* **Testing:** Pytest
+* **Core:** Python 3.11+, FastAPI
+* **ML Pipeline:** Scikit-learn (TF-IDF, Logistic Regression), Joblib
+* **Data Ops:** Pandas, CSV-based Staging & Gold Standard architecture
+* **DevOps:** Docker, Fedora Workstation (Intel-based), Makefile automation
+* **Quality Assurance:** Pytest
 
 ## 📂 Project Structure
 
 ```text
-.
-├── data/               # Training datasets and user feedback logs
-├── models/             # Exported .joblib ML models
-├── scripts/            # Automation scripts (data init/augmentation)
-├── src/                # Core business logic
-│   ├── app.py          # FastAPI application entry point
-│   ├── ml_engine.py    # ML inference engine
-│   └── agents.py       # Rule-based agent system
-├── tests/              # Unit tests (pytest)
-└── Makefile            # Automation pipeline management
+VeriPhish_Engine/
+├── data/               # Data management hub (Staging and Gold Standard)
+├── models/             # Serialized ML model artifacts (.joblib)
+├── scripts/            # Automation and data engineering scripts
+├── src/                # Core business logic and API service
+├── tests/              # Automated regression testing (Pytest)
+├── Makefile            # Declarative automation pipeline entry point
+└── Dockerfile          # OCI-compliant container configuration
 
 ```
 
 ## ⚡ Quick Start
 
-### 1. Setup Environment
+### 1. Environment Setup
 
 ```bash
 python3 -m venv venv
@@ -41,38 +43,35 @@ pip install -r requirements.txt
 
 ```
 
-### 2. Initialize & Train
+### 2. Automation Pipeline (Makefile)
 
-Use the `Makefile` to handle the training pipeline:
+The project utilizes `Makefile` to encapsulate complex workflows:
 
 ```bash
-# Initialize data and train the model
+# Initialize project data
+make init
+
+# Execute regression tests
+make test
+
+# Train the model (standardized pipeline)
 make train
 
-# Add new data and re-train
+# Merge verified feedback and re-train (closed-loop)
 make update-model
 
 ```
 
-### 3. Run Tests
-
-Ensure the core logic is functioning correctly:
+### 3. Launch Service
 
 ```bash
-make test
-
-```
-
-### 4. Launch API
-
-```bash
-uvicorn src.app:app --reload
+uvicorn src.app:app --host 0.0.0.0 --port 8000
 
 ```
 
 ## 💡 Key Features
 
-* **Multi-Layered Risk Assessment:** Blends heuristic rule-based agents with ML confidence scores.
-* **Closed-Loop Learning:** Supports a `/api/feedback` endpoint to capture misclassified samples for future model refinement.
-* **Automated MLOps:** Streamlined data management via Makefile, ensuring consistency between development and production environments.
+* **Hybrid Defense Mechanism:** Blends the immediate logic of rule-based agents with the statistical pattern recognition of ML models to improve resilience against novel phishing tactics.
+* **HITL Data Integrity Pipeline:** Implements a dual-stage data handling process (Staging vs. Gold Standard) to mitigate overfitting and data poisoning risks.
+* **Operational Reproducibility:** Through Docker and dynamic path resolution, the engine maintains high portability across Fedora and other Linux distributions.
 
