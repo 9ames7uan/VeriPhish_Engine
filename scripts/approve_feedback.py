@@ -42,8 +42,9 @@ def approve_feedback():
         new_approved_df.to_csv(approved_path, index=False, encoding="utf-8-sig")
         print(f"\n🎉 審核完成！共 {len(new_approved_df)} 筆資料已儲存至 approved_feedback.csv。")
     
-    os.remove(pending_path)
-    print("🧹 已清空 pending_feedback.csv。")
+    with open(pending_path, 'w', encoding='utf-8-sig') as f:
+        pd.DataFrame(columns=["timestamp", "message", "input_type", "predicted_label", "correct_label", "reason"]).to_csv(f, index=False)
+    print(f"🧹 已清空 {pending_path}，檔案結構已保留。")
 
 if __name__ == "__main__":
     approve_feedback()

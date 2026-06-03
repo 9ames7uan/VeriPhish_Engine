@@ -25,7 +25,5 @@ def merge_approved_feedback():
     combined_df.to_csv(training_path, index=False, encoding="utf-8-sig")
     print(f"✅ 已將 {len(new_data)} 筆審核通過的資料合併。目前總筆數：{len(combined_df)}")
 
-    os.remove(approved_path)
-
 if __name__ == "__main__":
     merge_approved_feedback()
