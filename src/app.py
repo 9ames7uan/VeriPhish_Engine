@@ -3,16 +3,18 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from src.agents import analyze_message
-from src.ml_engine import ml_predict_label
+from src.ml_engine import ml_predict_label, InferenceEngine
 from src.feedback import save_feedback
 
 app = FastAPI(title="VeriPhish Engine")
 
+@app.on_event("startup")
+async def startup_event():
+    InferenceEngine()
+
 class AnalyzeRequest(BaseModel):
     content: str
     input_type: str = "LINE"
-
-TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), "templates", "index.html")
 
 class FeedbackRequest(BaseModel):
     content: str
@@ -20,6 +22,8 @@ class FeedbackRequest(BaseModel):
     predicted_label: str
     correct_label: str
     reason: str = ""
+
+TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), "templates", "index.html")
 
 def get_html_content():
     if os.path.exists(TEMPLATE_PATH):
@@ -31,9 +35,7 @@ HTML_CONTENT = get_html_content()
 
 @app.post("/api/analyze")
 def analyze(req: AnalyzeRequest):
-
     result = analyze_message(req.content, req.input_type)
-
     ml_label, ml_scores = ml_predict_label(req.content, req.input_type)
 
     if ml_label:
