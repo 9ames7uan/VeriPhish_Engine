@@ -1,0 +1,13 @@
+message,input_type,label,scam_type
+【警告】您的鏈上資產疑似與詐騙地址互動，為確保安全，請連結錢包解除授權：https://revoked-approve.io,Email,RED,Web3授權釣魚
+您的代幣分發資格已確認，請透過以下連結確認您的錢包地址以領取空投：https://airdrop-claims.net/verify,Chat,RED,假空投釣魚
+【金融監管】您的帳戶涉及非法洗錢，請立即依照指示將資金轉入安全託管帳戶以利後續調查。,LINE,RED,假檢警詐騙
+因系統升級，您的會員帳號將暫時凍結，請點擊此處更新您的雙重驗證 (2FA) 設定：https://security-update-center.com,SMS,RED,假2FA釣魚
+老師通知，本週六的投資交流會改為線上直播，點擊連結報名領取專屬投資組合：https://investment-live-web.com,LINE,RED,假投資群組
+您的包裹配送資訊有誤，請點擊連結填寫正確的收件地址與聯絡電話：https://shipping-fix.com,SMS,YELLOW,疑似物流釣魚
+客服通知您，您有一筆未領取的消費回饋金即將失效，請於今日內登入帳號查詢。,Email,YELLOW,疑似假客服
+您的帳戶近期登入地區與過往不同，若非本人操作請儘速變更密碼。,Email,YELLOW,疑似帳戶異常通知
+下週一的專案進度匯報，請各組將投影片上傳至共享雲端硬碟。,LINE,GREEN,正常工作通知
+您預訂的診所掛號順序已更新，預計將於 20 分鐘後進行看診。,SMS,GREEN,正常掛號通知
+請問你今天晚上有空一起去圖書館準備明天的期末考試嗎？,Chat,GREEN,正常聊天
+包裹已送達取件門市，請攜帶身分證件於營業時間內取件。,SMS,GREEN,正常通知

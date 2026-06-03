@@ -1,0 +1,26 @@
+message,input_type,label,scam_type
+【Urgent】Your ETH wallet is being accessed from a new device. If not you, please verify here: https://sync-metamask.io/auth,Email,RED,Web3錢包釣魚
+Claim your 500 $APE airdrop now! Connect your wallet at: https://ape-airdrop-claim.com,Chat,RED,Web3空投詐騙
+您的銀行帳戶因未更新 KYC 資料即將被凍結，請立即前往：https://bank-kyc-verify.com,SMS,RED,假銀行KYC釣魚
+親愛的會員，您的帳號因安全問題被鎖定，請點擊此連結進行人臉辨識驗證：https://verify-id.net,Email,RED,假個資驗證釣魚
+恭喜中獎！請點連結領取現金紅包，輸入信用卡號即可解鎖。,LINE,RED,假中獎個資詐騙
+投資美股代操，保證每月獲利 15%，加 Line 了解詳情。,SMS,RED,假投資詐騙
+有人在異地登入您的 LINE 帳號，請確認是否為本人操作。,LINE,YELLOW,疑似帳戶異常通知
+您的包裹預計將於兩日內送達，請留意收件資訊。,SMS,YELLOW,疑似包裹通知
+請留意，近期有不肖份子冒用本公司名義進行投資詐騙，請勿受騙。,Email,YELLOW,防詐騙提醒
+提醒您，會員點數即將於月底過期，請記得兌換。,Email,GREEN,正常通知
+請問週五的聚餐時間確定了嗎？,Chat,GREEN,正常聊天
+下週一的工作進度報告，請記得在期限前上傳。,LINE,GREEN,正常工作通知
+message,input_type,label,scam_type
+【重要通知】您的幣安帳號出現異常活動，請立即完成安全性驗證：https://binance-safety-check.net,Email,RED,Web3交易所釣魚
+恭喜！您被選中參與去中心化基金會治理投票，點擊領取您的獎勵：https://dao-governance-reward.xyz,Chat,RED,假DAO治理詐騙
+提醒：您的包裹因地址填寫錯誤退回，請點擊此處更新資訊以利重新配送：https://post-delivery-update.cc,SMS,RED,假物流釣魚
+檢察官辦案通知，您的銀行帳戶已被凍結，請立即將資產轉入監管帳戶進行清查。,LINE,RED,假檢警詐騙
+【投資快訊】跟著主力買進這檔 Web3 概念股，預計兩週翻倍，限時加入群組。,LINE,RED,假投資群組
+您的帳戶餘額不足，請儘速儲值以避免服務中斷。,Email,YELLOW,疑似帳戶提醒
+客服提醒您有一筆待領取的補償金，請回覆本訊息以獲取領取方式。,LINE,YELLOW,疑似假客服
+您的訂單已排入出貨程序，預計將於 3-5 個工作天內抵達。,Email,GREEN,正常通知
+這週末的球隊聚餐時間訂在晚上七點，地點在校門口對面的餐廳。,Chat,GREEN,正常聊天
+請協助將這份文件的電子檔傳送給部門主管，謝謝。,Email,GREEN,正常工作通知
+您預訂的圖書館座位將於兩小時後到期，請留意使用時間。,SMS,GREEN,正常通知
+這份關於作業系統架構的共筆文件已更新完成，歡迎大家參考。,LINE,GREEN,正常學術討論
