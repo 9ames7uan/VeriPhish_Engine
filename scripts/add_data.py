@@ -1,39 +1,48 @@
 import pandas as pd
 import os
 import shutil
+import sys
+import glob
 from datetime import datetime
 
-def add_new_data():
-    path = "data/phishing_training_data.csv"
+def add_new_data(input_csv_path="data/new_data.csv"):
+    main_path = "data/phishing_training_data.csv"
 
-    if not os.path.exists(path):
-        print(f"❌ 找不到檔案: {path}，請先執行 make init")
+    if not os.path.exists(main_path):
+        print(f"❌ 找不到主資料檔案: {main_path}")
         return
 
+    if not os.path.exists(input_csv_path):
+        print(f"❌ 找不到來源檔案: {input_csv_path}")
+        return
+
+    # 備份邏輯
     backup_path = f"data/phishing_training_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.bak"
-    shutil.copy(path, backup_path)
+    shutil.copy(main_path, backup_path)
     print(f"📦 已建立資料備份: {backup_path}")
 
-    df = pd.read_csv(path)
+    # 清理舊備份 (只保留最新的 3 個)
+    backups = sorted(glob.glob("data/phishing_training_data_*.bak"), reverse=True)
+    if len(backups) > 3:
+        for old_backup in backups[3:]:
+            os.remove(old_backup)
+            print(f"🧹 已刪除舊備份: {old_backup}")
 
-    new_data = [
-        {"message": "您的信用卡付款失敗，請立即點擊 http://secure-card-update.com 更新卡號與CVV。", "input_type": "SMS", "label": "RED", "scam_type": "信用卡釣魚"},
-        {"message": "檢察官通知您涉及洗錢案件，請保持通話並依照指示轉帳到安全帳戶。", "input_type": "LINE", "label": "RED", "scam_type": "假檢警詐騙"},
-        {"message": "您好，明天課程改到線上，連結稍後由老師公告。", "input_type": "LINE", "label": "GREEN", "scam_type": "正常課程通知"},
-        {"message": "您的會員資料可能需要更新，請留意官方通知。", "input_type": "Email", "label": "YELLOW", "scam_type": "疑似資料更新通知"}
-    ]
+    df_main = pd.read_csv(main_path)
+    df_new = pd.read_csv(input_csv_path)
 
-    df_new = pd.DataFrame(new_data)
-
-    existing_messages = df["message"].tolist()
+    existing_messages = df_main["message"].tolist()
     df_new = df_new[~df_new["message"].isin(existing_messages)]
 
     if not df_new.empty:
-        df = pd.concat([df, df_new], ignore_index=True)
-        df.to_csv(path, index=False, encoding="utf-8-sig")
+        df_combined = pd.concat([df_main, df_new], ignore_index=True)
+        df_combined.to_csv(main_path, index=False, encoding="utf-8-sig")
         print(f"✅ 成功新增 {len(df_new)} 筆新資料。")
     else:
         print("ℹ️ 沒有新資料需要加入 (資料已存在)。")
 
 if __name__ == "__main__":
-    add_new_data()
+    if len(sys.argv) > 1:
+        add_new_data(sys.argv[1])
+    else:
+        add_new_data()

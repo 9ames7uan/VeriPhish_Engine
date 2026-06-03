@@ -14,3 +14,19 @@
 今晚一起吃飯嗎？我大概六點到。,Chat,GREEN,正常聊天
 會議記錄已整理完成，請大家有空時查看附件。,Email,GREEN,正常工作信件
 您的訂單已送達，感謝您的購買。,SMS,GREEN,正常通知
+您的信用卡付款失敗，請立即點擊 http://secure-card-update.com 更新卡號與CVV。,SMS,RED,信用卡釣魚
+檢察官通知您涉及洗錢案件，請保持通話並依照指示轉帳到安全帳戶。,LINE,RED,假檢警詐騙
+您好，明天課程改到線上，連結稍後由老師公告。,LINE,GREEN,正常課程通知
+您的會員資料可能需要更新，請留意官方通知。,Email,YELLOW,疑似資料更新通知
+ please verify here: https://sync-metamask.io/auth,Email,RED,Web3錢包釣魚
+Chat,RED,Web3空投詐騙,
+SMS,RED,假銀行KYC釣魚,
+Email,RED,假個資驗證釣魚,
+LINE,RED,假中獎個資詐騙,
+SMS,RED,假投資詐騙,
+LINE,YELLOW,疑似帳戶異常通知,
+SMS,YELLOW,疑似包裹通知,
+Email,YELLOW,防詐騙提醒,
+Email,GREEN,正常通知,
+Chat,GREEN,正常聊天,
+LINE,GREEN,正常工作通知,

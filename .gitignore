@@ -8,3 +8,4 @@ venv/
 models/*.joblib
 data/*.csv
 !data/phishing_training_data.csv
+*.bak
