@@ -1,27 +1,47 @@
 import os
 import joblib
+import logging
+from src.utils import BASE_DIR
 
-MODEL_PATH = "models/phishing_risk_model.joblib"
-_ml_model = None
+logger = logging.getLogger(__name__)
 
-def get_ml_model():
-    global _ml_model
-    if _ml_model is None:
-        if os.path.exists(MODEL_PATH):
-            _ml_model = joblib.load(MODEL_PATH)
-    return _ml_model
+class InferenceEngine:
+    _instance = None
+    _model = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(InferenceEngine, cls).__new__(cls)
+            cls._instance._load_model()
+        return cls._instance
+
+    def _load_model(self):
+        model_path = os.path.join(BASE_DIR, "models", "phishing_risk_model.joblib")
+        if os.path.exists(model_path):
+            try:
+                self._model = joblib.load(model_path)
+                logger.info(f"Model successfully loaded from {model_path}")
+            except Exception as e:
+                logger.error(f"Failed to load model: {e}")
+                self._model = None
+        else:
+            logger.warning(f"Model file not found at {model_path}")
+
+    def predict(self, content: str, input_type: str):
+        if self._model is None:
+            return None, {}
+        
+        try:
+            model_input = f"{input_type} {content}"
+            label = self._model.predict([model_input])[0]
+            proba = self._model.predict_proba([model_input])[0]
+            classes = self._model.classes_
+            scores = {cls: float(round(p, 3)) for cls, p in zip(classes, proba)}
+            return label, scores
+        except Exception as e:
+            logger.error(f"Inference error: {e}")
+            return None, {}
 
 def ml_predict_label(content: str, input_type: str):
-    model = get_ml_model()
-    if model is None:
-        return None, {}
-    
-    try:
-        model_input = f"{input_type} {content}"
-        label = model.predict([model_input])[0]
-        proba = model.predict_proba([model_input])[0]
-        classes = model.classes_
-        scores = {cls: float(round(p, 3)) for cls, p in zip(classes, proba)}
-        return label, scores
-    except Exception:
-        return None, {}
+    engine = InferenceEngine()
+    return engine.predict(content, input_type)
