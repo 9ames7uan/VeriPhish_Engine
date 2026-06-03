@@ -1,5 +1,7 @@
 import pandas as pd
 import os
+import shutil
+from datetime import datetime
 
 def add_new_data():
     path = "data/phishing_training_data.csv"
@@ -7,6 +9,10 @@ def add_new_data():
     if not os.path.exists(path):
         print(f"❌ 找不到檔案: {path}，請先執行 make init")
         return
+
+    backup_path = f"data/phishing_training_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.bak"
+    shutil.copy(path, backup_path)
+    print(f"📦 已建立資料備份: {backup_path}")
 
     df = pd.read_csv(path)
 
